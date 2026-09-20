@@ -11,22 +11,8 @@ st.write("""Choose the fruits you want in your custom Smoothie""")
 name_on_order = st.text_input('Name of Smoothie:')
 st.write('The name on your Smoothie will be:', name_on_order)
 
-try:
-    cnx = st.connection("snowflake")
-    session = cnx.session()
-    
-    st.success("Connected successfully!")
-    
-    current_user = session.sql(
-        "select current_user(), current_role(), current_warehouse()"
-    ).collect()
-    
-    st.write(current_user)
-    
-except Exception as e:
-    st.error(f"Connection failed: {type(e).__name__}")
-    st.exception(e)
-    
+cnx = st.connection("snowflake")
+session = cnx.session()
 my_dataframe = session.table("smoothies.public.fruit_options").select(col('FRUIT_NAME'))
 #st.dataframe(data=my_dataframe, use_container_width=True)
 
